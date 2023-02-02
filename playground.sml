@@ -74,3 +74,31 @@ fun sum_triple(x, y, z) =
 
 
 sum_triple(1,2,3)
+
+exception ListLengthMismatch
+
+fun zip3 list_triple =
+    case list_triple of 
+        ([],[],[]) => []
+      | (x::xs, y::ys, z::zs) => (x,y,z) :: zip3(xs,ys,zs)
+      | _                     => raise ListLengthMismatch
+
+zip3([1,3,5],[2,4,6],[3,5,7])
+
+fun unzip3 lst = 
+    case lst of 
+        [] => ([],[],[])
+      | (x,y,z)::tl => let val (l1,l2,l3) = unzip3 tl 
+                       in (x::l1,y::l2,z::l3) 
+                       end
+
+unzip3[(1,2,3),(3,4,5),(5,6,7)]
+
+fun nondecreasing xs =
+    case xs of 
+        []     => true 
+       | x::[] => true 
+       | x::y::rest => x <= y 
+                       andalso nondecreasing(y::rest)
+
+nondecreasing[1,2,4,3,5]
