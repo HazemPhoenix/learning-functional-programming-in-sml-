@@ -102,3 +102,12 @@ fun nondecreasing xs =
                        andalso nondecreasing(y::rest)
 
 nondecreasing[1,2,4,3,5]
+
+fun fact n =
+    let 
+        fun helper(n, acc) = 
+            if(n = 0) then acc
+            else helper(n - 1, acc * n)
+    in 
+        helper(n, 1)
+    end
