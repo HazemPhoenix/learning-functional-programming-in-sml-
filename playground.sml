@@ -119,3 +119,28 @@ fun n_times(f, n, x) =
 
 
 fun triple_n_times(n, x) = n_times(fn a => 3 * a, n, x)
+
+fun map(f, xs) = 
+    case xs of 
+        [] => []
+        | x::xs' => (f x) :: map(f, xs')
+
+(*(a' -> b') * a' list -> b' list*)
+
+map(fn a => 2 * a, [1,2,3,4])
+
+
+fun filter(f, xs) =
+    case xs of 
+        [] => []
+        | x::xs' => if f x 
+                    then x :: filter(f, xs')
+                    else filter(f, xs')
+
+(*(a' -> boolean) * a' list -> a' list*)
+
+fun is_more_than_three x = x > 3 
+fun is_less_than_three x = x < 3 
+
+val less = filter(is_less_than_three, [1,2,3,4,5,6])
+val more = filter(is_more_than_three, [1,2,3,4,5,6])
