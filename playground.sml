@@ -150,8 +150,23 @@ fun fold f acc xs =
     case xs of 
         [] => acc
         | x::xs' => fold f (f(acc, x)) xs'
+        
 
-    
+(*
+fun range x y = 
+    if x = y then [x]
+    else if x > y then x :: range (x - 1) y
+    else x :: range (x + 1) y
+            *)
+
+fun range(x, y) = 
+    if x = y then [x]
+    else if x > y then x :: range(x - 1, y)
+    else x :: range(x + 1, y)
+
+fun curry f = fn x => fn y => f(x, y)
+(curry range) 3 7
+
 fun sum xs = fold (fn(a,b) => a + b) 0 xs
 fun multiply xs = fold (fn(a,b) => a * b) 1 xs
 fun all_positive xs = fold ((fn(a,b) => a andalso b >= 0)) true xs
