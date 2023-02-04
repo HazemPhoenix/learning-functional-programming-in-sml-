@@ -146,18 +146,41 @@ val less = filter(fn x => x < 3, [1,2,3,4,5,6])
 val more = filter(fn x => x > 3, [1,2,3,4,5,6])
 
 
-fun fold(f, acc, xs) = 
+fun fold f acc xs = 
     case xs of 
         [] => acc
-        | x::xs' => fold(f, f(acc, x), xs')
+        | x::xs' => fold f (f(acc, x)) xs'
 
     
-fun sum xs = fold(fn(a,b) => a + b, 0, xs)
-fun multiply xs = fold(fn(a,b) => a * b, 1, xs)
-fun all_positive xs = fold((fn(a,b) => a andalso b >= 0), true, xs)
+fun sum xs = fold (fn(a,b) => a + b) 0 xs
+fun multiply xs = fold (fn(a,b) => a * b) 1 xs
+fun all_positive xs = fold ((fn(a,b) => a andalso b >= 0)) true xs
+
+val sum2 = fold (fn(a,b) => a + b) 0
+sum2 [1,2,3]
+
+val multiply2 = fold (fn(a,b) => a * b) 1
+multiply2[1,2,3,4,5]
+
+val all_positive2 = fold (fn (a,b) => a andalso b >= 0) true
+all_positive2[1,2,~3,4,5]
 
 (*fun sorted3 x = fn y => fn z => z >= y andalso y >= x*)
-
 fun sorted3 x y z = z >= y andalso y >= x
-sorted3 2 4 6
-sorted3 2 6 4
+
+val test_sort1 = sorted3 2 4 6
+val test_sort2 = sorted3 2 6 4
+val fewer_args = sorted3 2 4 
+fewer_args 6
+fewer_args 3
+
+fun range x y = 
+    if x = y then [x]
+    else if x > y then x :: range (x - 1) y
+    else x :: range (x + 1) y
+
+range 10 2
+range 2 10
+
+val count_from1 = range 1 
+count_from1 20
