@@ -142,5 +142,22 @@ fun filter(f, xs) =
 fun is_more_than_three x = x > 3 
 fun is_less_than_three x = x < 3 
 
-val less = filter(is_less_than_three, [1,2,3,4,5,6])
-val more = filter(is_more_than_three, [1,2,3,4,5,6])
+val less = filter(fn x => x < 3, [1,2,3,4,5,6])
+val more = filter(fn x => x > 3, [1,2,3,4,5,6])
+
+
+fun fold(f, acc, xs) = 
+    case xs of 
+        [] => acc
+        | x::xs' => fold(f, f(acc, x), xs')
+
+    
+fun sum xs = fold(fn(a,b) => a + b, 0, xs)
+fun multiply xs = fold(fn(a,b) => a * b, 1, xs)
+fun all_positive xs = fold((fn(a,b) => a andalso b >= 0), true, xs)
+
+(*fun sorted3 x = fn y => fn z => z >= y andalso y >= x*)
+
+fun sorted3 x y z = z >= y andalso y >= x
+sorted3 2 4 6
+sorted3 2 6 4
