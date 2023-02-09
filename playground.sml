@@ -199,3 +199,35 @@ range 2 10
 
 val count_from1 = range 1 
 count_from1 20
+
+
+fun no_mutual_recursion xs = 
+    case xs of 
+        [] => true 
+        | x::[] => false
+        | x::y::xy => if x < y 
+                        then no_mutual_recursion xy
+                        else false
+
+
+fun mutual_recursion xs = 
+    let fun s_need_one xs =
+            case xs of 
+            [] => true
+            |1::xs' => s_need_two xs'
+            |_ => false
+        and s_need_two xs = 
+            case xs of 
+            [] => false 
+            |2::xs' => s_need_one xs'
+            |_ => false 
+    in 
+        s_need_one xs
+    end
+
+val test1 = mutual_recursion [] = no_mutual_recursion []
+val test2 = mutual_recursion [1] = no_mutual_recursion [1]
+val test3 = mutual_recursion [1,2] = no_mutual_recursion [1,2]
+val test4 = mutual_recursion [1,2,1] = no_mutual_recursion [1,2,1]
+val test5 = mutual_recursion[1,2,1,2] = no_mutual_recursion [1,2,1,2]
+val test6 = mutual_recursion[1,2,1,3,2] = no_mutual_recursion [1,2,1,3,2]
