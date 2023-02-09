@@ -231,3 +231,33 @@ val test3 = mutual_recursion [1,2] = no_mutual_recursion [1,2]
 val test4 = mutual_recursion [1,2,1] = no_mutual_recursion [1,2,1]
 val test5 = mutual_recursion[1,2,1,2] = no_mutual_recursion [1,2,1,2]
 val test6 = mutual_recursion[1,2,1,3,2] = no_mutual_recursion [1,2,1,3,2]
+
+
+structure List2 = 
+    struct 
+        fun MyMap f xs = 
+            case xs of 
+                [] => []
+                |x::xs' => (f x) :: MyMap f xs' 
+
+        fun MyFold f acc xs  =
+            case xs of 
+                [] => acc
+                |x::xs' =>  MyFold f (f(acc, x)) xs' 
+
+        fun MyFilter f xs = 
+            case xs of 
+                [] => []
+                |x::xs' => case f x of 
+                            true => x :: MyFilter f xs'
+                            |_   => MyFilter f xs'
+    end 
+
+val double_list =  List2.MyMap (fn x => x * 2)
+double_list [1,2,3,4]
+
+val sum_list = List2.MyFold (fn(x, y) => x + y) 0 
+sum_list [1,2,3,4]
+
+val only_even = List2.MyFilter (fn x => x mod 2 = 0)
+only_even [1,2,3,4,5,6,7,8,9,10]
