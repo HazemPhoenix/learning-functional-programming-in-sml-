@@ -233,7 +233,14 @@ val test5 = mutual_recursion[1,2,1,2] = no_mutual_recursion [1,2,1,2]
 val test6 = mutual_recursion[1,2,1,3,2] = no_mutual_recursion [1,2,1,3,2]
 
 
-structure List2 = 
+signature MYLIST =
+    sig
+        val MyMap: ('a -> 'b) -> 'a  list -> 'b list 
+        val MyFold: ('a  * 'b -> 'a ) -> 'a  -> 'b list -> 'a 
+        val MyFilter: ('a  -> bool) -> 'a  list -> 'a  list
+    end
+
+structure MyList :> MYLIST = 
     struct 
         fun MyMap f xs = 
             case xs of 
@@ -253,11 +260,12 @@ structure List2 =
                             |_   => MyFilter f xs'
     end 
 
-val double_list =  List2.MyMap (fn x => x * 2)
+
+val double_list =  MyList.MyMap (fn x => x * 2)
 double_list [1,2,3,4]
 
-val sum_list = List2.MyFold (fn(x, y) => x + y) 0 
+val sum_list = MyList.MyFold (fn(x, y) => x + y) 0 
 sum_list [1,2,3,4]
 
-val only_even = List2.MyFilter (fn x => x mod 2 = 0)
+val only_even = MyList.MyFilter (fn x => x mod 2 = 0)
 only_even [1,2,3,4,5,6,7,8,9,10]
